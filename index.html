@@ -1,1 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dadi Maa Restaurant & Banquet Hall</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#f9f9f9;
+scroll-behavior:smooth;
+}
+
+header{
+background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url('https://source.unsplash.com/1600x900/?restaurant');
+background-size:cover;
+color:white;
+text-align:center;
+padding:100px 20px;
+}
+
+header h1{font-size:45px;margin:0;}
+header p{margin:10px 0 20px;}
+
+.btn{
+background:#ffcc00;
+padding:12px 25px;
+border-radius:30px;
+text-decoration:none;
+color:black;
+font-weight:bold;
+}
+
+section{padding:60px 20px;text-align:center;}
+
+.menu .item{
+background:white;
+padding:15px;
+margin:15px auto;
+max-width:300px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+button{
+background:#8B0000;
+color:white;
+border:none;
+padding:8px 15px;
+cursor:pointer;
+border-radius:5px;
+}
+
+.slider{
+max-width:800px;
+margin:auto;
+position:relative;
+}
+
+.slide{
+width:100%;
+display:none;
+border-radius:15px;
+}
+
+.active{display:block;}
+
+.review-box{
+background:#fff3e6;
+padding:20px;
+margin:15px auto;
+max-width:500px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.cart-btn{
+position:fixed;
+top:20px;
+right:20px;
+background:black;
+color:white;
+padding:10px 15px;
+border-radius:30px;
+cursor:pointer;
+}
+
+.cart-modal{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.6);
+}
+
+.cart-content{
+background:white;
+width:90%;
+max-width:400px;
+margin:50px auto;
+padding:20px;
+border-radius:10px;
+}
+
+.whatsapp-btn{
+position:fixed;
+bottom:80px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px;
+border-radius:50%;
+font-size:22px;
+text-decoration:none;
+}
+
+.call-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:red;
+color:white;
+padding:15px;
+border-radius:50%;
+font-size:22px;
+text-decoration:none;
+}
+
+footer{
+background:#111;
+color:white;
+padding:20px;
+text-align:center;
+}
+</style>
+</head>
+<body>
+
+<div class="cart-btn" onclick="openCart()">🛒 Cart (<span id="cart-count">0</span>)</div>
+
+<header>
+<h1>Dadi Maa Restaurant</h1>
+<p>Authentic Taste | Family Dining | Banquet Hall</p>
+<a href="https://wa.me/919731837847" class="btn">Order on WhatsApp</a>
+</header>
+
+<section class="menu">
+<h2>Our Menu</h2>
+
+<div class="item">
+<h3>Chicken Biryani</h3>
+<p>₹180</p>
+<button onclick="addToCart('Chicken Biryani',180)">Add to Cart</button>
+</div>
+
+<div class="item">
+<h3>Mutton Curry</h3>
+<p>₹250</p>
+<button onclick="addToCart('Mutton Curry',250)">Add to Cart</button>
+</div>
+
+<div class="item">
+<h3>Paneer Butter Masala</h3>
+<p>₹160</p>
+<button onclick="addToCart('Paneer Butter Masala',160)">Add to Cart</button>
+</div>
+</section>
+
+<section>
+<h2>Gallery</h2>
+<div class="slider">
+<img src="https://source.unsplash.com/800x500/?biryani" class="slide active">
+<img src="https://source.unsplash.com/800x500/?indian-food" class="slide">
+<img src="https://source.unsplash.com/800x500/?tandoori" class="slide">
+</div>
+</section>
+
+<section>
+<h2>Customer Reviews</h2>
+<div class="review-box">
+<p>"Amazing food and great service!"</p>
+⭐⭐⭐⭐⭐
+</div>
+<div class="review-box">
+<p>"Best family restaurant in Jajpur."</p>
+⭐⭐⭐⭐⭐
+</div>
+</section>
+
+<section>
+<h2>Find Us</h2>
+<iframe src="https://www.google.com/maps?q=Dadi+Maa+Restaurant+Jajpur&output=embed"
+width="100%" height="300" style="border:0;" allowfullscreen=""></iframe>
+</section>
+
+<section>
+<h2>Admin Panel (Demo)</h2>
+<p>All orders are received directly on WhatsApp: +91 97318 37847</p>
+<p>Future upgrade: Live database & order tracking system.</p>
+</section>
+
+<div id="cart-modal" class="cart-modal">
+<div class="cart-content">
+<h2>Your Cart</h2>
+<div id="cart-items"></div>
+<h3>Total: ₹<span id="total">0</span></h3>
+<button onclick="checkout()">Order via WhatsApp</button>
+<button onclick="closeCart()">Close</button>
+</div>
+</div>
+
+<a href="https://wa.me/919731837847" class="whatsapp-btn">💬</a>
+<a href="tel:+919731837847" class="call-btn">📞</a>
+
+<footer>
+© 2026 Dadi Maa Restaurant | All Rights Reserved
+</footer>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function updateCart(){
+document.getElementById("cart-count").innerText = cart.length;
+let items="";
+let total=0;
+cart.forEach(item=>{
+items+= `<p>${item.name} - ₹${item.price}</p>`;
+total+=item.price;
+});
+document.getElementById("cart-items").innerHTML=items;
+document.getElementById("total").innerText=total;
+localStorage.setItem("cart",JSON.stringify(cart));
+}
+
+function addToCart(name,price){
+cart.push({name,price});
+updateCart();
+}
+
+function openCart(){
+document.getElementById("cart-modal").style.display="block";
+}
+
+function closeCart(){
+document.getElementById("cart-modal").style.display="none";
+}
+
+function checkout(){
+let message="Hello, I want to order:%0A";
+let total=0;
+cart.forEach(item=>{
+message+=`${item.name} - ₹${item.price}%0A`;
+total+=item.price;
+});
+message+=`Total: ₹${total}`;
+window.open(`https://wa.me/919731837847?text=${message}`);
+}
+
+updateCart();
+
+let slides=document.querySelectorAll(".slide");
+let index=0;
+setInterval(()=>{
+slides.forEach(s=>s.classList.remove("active"));
+index++;
+if(index>=slides.length) index=0;
+slides[index].classList.add("active");
+},3000);
+</script>
+
+</body>
+</html>
